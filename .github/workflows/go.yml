@@ -3,7 +3,7 @@ name: Go
 on: [push]
 
 jobs:
-  build:
+  linux_build:
 
     runs-on: ubuntu-latest
     strategy:
@@ -20,14 +20,23 @@ jobs:
         run: |
           go get .
           sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
+      - name: Get ck-client
+        run: |
+          wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-linux-amd64-v2.9.0
       - name: Build
-        run: go build -o linux_client -v ./...
+        run: go build -o dobby_client -v ./...
+      - name: Make zip
+        run: |
+          mkdir linux_client
+          mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
+          mv dobby_client linux_client/client
+          zip -d linux_client.zip linux_client
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: linux_client
-          asset_name: linux_client
+          file: linux_client.zip
+          asset_name: linux_client.zip
           tag: ${{ github.ref }}
           overwrite: true
           body: "Release"
