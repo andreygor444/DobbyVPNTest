@@ -19,7 +19,7 @@ jobs:
         uses: thatisuday/go-cross-build@v1
         with:
             platforms: 'linux/amd64, windows/amd64, android/amd64'
-            package: 'demo'
+            package: 'src'
             name: 'program'
             compress: 'true'
             dest: 'dist'
