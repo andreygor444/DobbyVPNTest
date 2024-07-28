@@ -8,4 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Windows build
-        run: go build ./src/main.go
+        run: |
+            ls
+            pwd
+            go build ./src/main.go
+            
