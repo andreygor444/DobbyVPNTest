@@ -7,14 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go-version: [ '1.21' ]
+        go-version: [ '1.22.5' ]
 
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.x'
+          go-version: '1.22.x'
       - name: Install dependencies
         run: |
           go get .
@@ -47,9 +47,6 @@ jobs:
   release:
     needs: [cross_build]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [ '1.21' ]
     
     steps:
       - name: Linux
