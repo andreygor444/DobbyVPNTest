@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: go get .
       - name: Install other dependencies
-	    run: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
+        run: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
       - name: Build
         run: go build -v ./...
       - name: Test with the Go CLI
