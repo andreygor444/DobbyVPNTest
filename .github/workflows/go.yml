@@ -3,7 +3,7 @@ name: Go
 on: [push]
 
 jobs:
-  setup:
+  cross_build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -20,39 +20,24 @@ jobs:
           go get .
           sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
 
-  linux_build:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [ '1.21' ]
-
-    steps:
-      - name: Get ck-client
+      - name: Get linux ck-client
         run: |
           wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-linux-amd64-v2.9.0
-      - name: Build
+      - name: Linux build
         run: go build -o dobby_client -v ./...
-      - name: Make zip
+      - name: Make linux zip
         run: |
           mkdir linux_client
           mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
           mv dobby_client linux_client/client
           zip -r linux_client.zip linux_client
 
-  windows_build:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [ '1.21' ]
-
-    steps:
-      - name: Build
+      - name: Get windows ck-client
+        run: wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
+      - name: Windows build
         run: |
-          wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
           sudo GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o dobby_client.exe -v ./...
-      - name: Make zip
+      - name: Make windows zip
         run: |
           mkdir windows_client
           mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
@@ -60,7 +45,7 @@ jobs:
           zip -r windows_client.zip windows_client
 
   release:
-    needs: [linux_build, windows_build]
+    needs: [cross_build]
     runs-on: ubuntu-latest
     strategy:
       matrix:
