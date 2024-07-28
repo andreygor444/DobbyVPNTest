@@ -15,12 +15,15 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.x'
+          go-version: ${{ matrix.go-version }}
       - name: Install dependencies
         run: go get .
       - name: Install other dependencies
         run: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
-      - name: Build
-        run: go build -v ./...
-      - name: Test with the Go CLI
-        run: go test
+      - name: Test with Go
+        run: go test -json > TestResults-${{ matrix.go-version }}.json
+      - name: Upload Go test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Go-results-${{ matrix.go-version }}
+          path: TestResults-${{ matrix.go-version }}.json

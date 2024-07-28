@@ -1,0 +1,26 @@
+name: Go
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.21' ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+      - name: Install dependencies
+        run: go get .
+      - name: Install other dependencies
+        run: sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
+      - name: Build
+        run: go build -v ./...
+      - name: Test with the Go CLI
+        run: go test
