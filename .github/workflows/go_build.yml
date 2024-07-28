@@ -1,25 +1,13 @@
-# workflow name
 name: Generate release-artifacts
 
-# on events
 on:
   release:
     types: 
         - created
 
-# workflow tasks
 jobs:
-  generate:
-    name: Generate cross-platform builds
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
-      - name: Generate build files
-        uses: thatisuday/go-cross-build@v1
-        with:
-            platforms: 'linux/amd64, windows/amd64, android/amd64'
-            package: 'src'
-            name: 'program'
-            compress: 'true'
-            dest: '.'
+      - name: Windows build
+        run: go build src/main.go
