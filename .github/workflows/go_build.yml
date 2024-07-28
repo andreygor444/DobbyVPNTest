@@ -22,4 +22,4 @@ jobs:
             package: 'src'
             name: 'program'
             compress: 'true'
-            dest: 'dist'
+            dest: '.'
