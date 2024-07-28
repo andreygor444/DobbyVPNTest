@@ -40,3 +40,27 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "Release"
+
+  windows_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build
+        run: |
+          wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
+          sudo GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o dobby_client.exe -v ./...
+      - name: Make zip
+        run: |
+          mkdir windows_client
+          mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
+          mv dobby_client.exe windows_client/client
+          zip -r windows_client.zip windows_client
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: windows_client.zip
+          asset_name: linux_client.zip
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "Release"
