@@ -1,69 +1,23 @@
-name: Go
+# workflow name
+name: Generate release-artifacts
 
-on: [push]
+# on events
+on:
+  [push]
 
+# workflow tasks
 jobs:
-  cross_build:
+  generate:
+    name: Generate cross-platform builds
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        go-version: [ '1.22.5' ]
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+      - name: Generate build files
+        uses: thatisuday/go-cross-build@v1
         with:
-          go-version: '1.22.x'
-      - name: Install dependencies
-        run: |
-          go get .
-          sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev
-
-      - name: Get linux ck-client
-        run: |
-          wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-linux-amd64-v2.9.0
-      - name: Linux build
-        run: go build -o dobby_client -v ./...
-      - name: Make linux zip
-        run: |
-          mkdir linux_client
-          mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
-          mv dobby_client linux_client/client
-          zip -r linux_client.zip linux_client
-
-      - name: Get windows ck-client
-        run: wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
-      - name: Windows build
-        run: |
-          sudo GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o dobby_client.exe -v ./...
-      - name: Make windows zip
-        run: |
-          mkdir windows_client
-          mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
-          mv dobby_client.exe windows_client/client
-          zip -r windows_client.zip windows_client
-
-  release:
-    needs: [cross_build]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Linux
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: linux_client.zip
-          asset_name: linux_client.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "Linux release"
-      - name: Windows
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: windows_client.zip
-          asset_name: windows_client.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "Windows release"
+            platforms: 'linux/amd64, darwin/amd64, windows/amd64'
+            package: './...'
+            name: 'client'
+            compress: 'true'
+            dest: 'dist'
