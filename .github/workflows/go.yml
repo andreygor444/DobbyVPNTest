@@ -3,7 +3,7 @@ name: Go
 on: [push]
 
 jobs:
-  build:
+  linux_build:
 
     runs-on: ubuntu-latest
     strategy:
@@ -30,7 +30,7 @@ jobs:
           mkdir linux_client
           mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
           mv dobby_client linux_client/client
-          zip -d linux_client.zip linux_client
+          zip -r linux_client.zip linux_client
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
