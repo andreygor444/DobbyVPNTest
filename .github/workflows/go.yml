@@ -49,12 +49,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Gets latest created release info
+        id: latest_release_info
+        uses: jossef/action-latest-release-info@v1.2.2
       - name: Linux Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
           asset_path: linux_client.zip
           asset_name: linux_client.zip
           asset_content_type: application/zip
