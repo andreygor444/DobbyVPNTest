@@ -11,6 +11,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get windows ck-client
+        run: wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
+      - name: Windows build
+        run: |
+          sudo GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o dobby_client.exe -v ./...
+      - name: Make windows zip
+        run: |
+          mkdir windows_client
+          mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
+          mv dobby_client.exe windows_client/client
+          zip -r windows_client.zip windows_client
+
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -31,18 +44,6 @@ jobs:
           mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
           mv dobby_client linux_client/client
           zip -r linux_client.zip linux_client
-
-      #- name: Get windows ck-client
-      #  run: wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-windows-386-v2.9.0.exe
-      #- name: Windows build
-      #  run: |
-      #    sudo GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o dobby_client.exe -v ./...
-      #- name: Make windows zip
-      #  run: |
-      #    mkdir windows_client
-      #    mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
-      #    mv dobby_client.exe windows_client/client
-      #    zip -r windows_client.zip windows_client
 
   release:
     needs: [cross_build]
