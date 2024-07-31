@@ -47,11 +47,6 @@ jobs:
           mv dobby_client linux_client/client
           zip -r linux_client.zip linux_client
 
-  release:
-    needs: [cross_build]
-    runs-on: ubuntu-latest
-    
-    steps:
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
