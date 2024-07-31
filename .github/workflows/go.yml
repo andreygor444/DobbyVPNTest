@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir windows_client
           mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
-          mv dobby_client.exe windows_client/client
+          mv dobby_client.exe windows_client/client.exe
           zip -r windows_client.zip windows_client
 
       - name: Get linux ck-client
@@ -63,22 +63,22 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Windows Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./windows_client.zip
-          asset_name: windows_client.zip
-          asset_content_type: application/zip
-
       - name: Upload Linux Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./linux_client.zip
           asset_name: linux_client.zip
+          asset_content_type: application/zip
+
+      - name: Upload Windows Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./windows_client.zip
+          asset_name: windows_client.zip
           asset_content_type: application/zip
