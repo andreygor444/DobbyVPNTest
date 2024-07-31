@@ -31,7 +31,7 @@ jobs:
       - name: Make windows zip
         run: |
           mkdir windows_client
-          mv ck-client.exe windows_client/ck-client.exe
+          mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
           mv dobby_client.exe windows_client/client
           zip -r windows_client.zip windows_client
 
