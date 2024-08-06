@@ -89,13 +89,15 @@ jobs:
     needs: [cross_build, macos_build]
 
     steps:
-      - name: Download clients
+      - name: Download linux client
         uses: actions/download-artifact@master
         with:
           name: linux_client.zip
+      - name: Download windows client
         uses: actions/download-artifact@master
         with:
           name: windows_client.zip
+      - name: Download macos client
         uses: actions/download-artifact@master
         with:
           name: macos_client.zip
