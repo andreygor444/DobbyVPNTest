@@ -36,7 +36,7 @@ jobs:
       - name: Make windows zip
         run: |
           mkdir windows_client
-          mv ck-client-windows-386-v2.9.0.exe windows_client/ck-client.exe
+          mv ck-client.exe windows_client/ck-client.exe
           mv dobby_client.exe windows_client/client.exe
           zip -r windows_client.zip windows_client
       - name: Upload Windows client
@@ -55,7 +55,7 @@ jobs:
       - name: Make linux zip
         run: |
           mkdir linux_client
-          mv ck-client-linux-amd64-v2.9.0 linux_client/ck-client
+          mv ck-client linux_client/ck-client
           mv dobby_client linux_client/client
           zip -r linux_client.zip linux_client
       - name: Upload Linux client
@@ -91,7 +91,7 @@ jobs:
       - name: Make macos zip
         run: |
           mkdir macos_client
-          mv ck-client-darwin-amd64-v2.9.0 macos_client/ck-client
+          mv ck-client macos_client/ck-client
           mv dobby_client macos_client/client
           zip -r macos_client.zip macos_client
       - name: Upload MacOs client
