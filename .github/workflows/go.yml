@@ -1,6 +1,11 @@
 name: Go
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
 
 jobs:
   cross_build:
@@ -127,8 +132,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: Linux
-          release_name: Linux release
+          tag_name: ${GITHUB_REF#refs/*/}
+          release_name: ${GITHUB_REF#refs/*/}
           draft: false
           prerelease: false
 
