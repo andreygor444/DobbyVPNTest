@@ -77,3 +77,28 @@ jobs:
           asset_path: ./windows_client.zip
           asset_name: windows_client.zip
           asset_content_type: application/zip
+
+  macos_build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        go-version: [ '1.22.5' ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.x'
+      - name: Get macos ck-client
+        run: wget https://github.com/cbeuw/Cloak/releases/download/v2.9.0/ck-client-darwin-amd64-v2.9.0
+      - name: MacOs build
+        run:
+          go build -o dobby_client ./...
+      - name: Make macos zip
+        run: |
+          mkdir macos_client
+          mv ck-client-darwin-amd64-v2.9.0 macos_client/ck-client
+          mv dobby_client macos_client/client
+          zip -r macos_client.zip macos_client
