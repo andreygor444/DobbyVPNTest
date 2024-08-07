@@ -45,7 +45,7 @@ jobs:
       - name: Upload Windows client
         uses: actions/upload-artifact@master
         with:
-          name: windows_client.zip
+          name: windows_client
           path: .
 
       - name: Build linux ck-client
@@ -64,7 +64,7 @@ jobs:
       - name: Upload Linux client
         uses: actions/upload-artifact@master
         with:
-          name: linux_client.zip
+          name: linux_client
           path: .
 
   macos_build:
@@ -100,7 +100,7 @@ jobs:
       - name: Upload MacOs client
         uses: actions/upload-artifact@master
         with:
-          name: macos_client.zip
+          name: macos_client
           path: .
 
   release:
