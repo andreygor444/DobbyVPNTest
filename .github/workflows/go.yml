@@ -137,6 +137,9 @@ jobs:
           draft: false
           prerelease: false
 
+      - name: Check
+        run: ls
+
       - name: Upload Linux Release Asset
         uses: actions/upload-release-asset@v1
         env:
