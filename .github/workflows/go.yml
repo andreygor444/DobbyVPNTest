@@ -112,7 +112,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: linux_client.zip
-          path: .
+          path: ./linux_client.zip
       - name: Download windows client
         uses: actions/download-artifact@master
         with:
