@@ -123,6 +123,8 @@ jobs:
         with:
           name: macos_client.zip
           path: .
+      - name: Check1
+        run: ls
 
       - name: Checkout code
         uses: actions/checkout@v2
