@@ -108,6 +108,19 @@ jobs:
     needs: [cross_build, macos_build]
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: Linux
+          release_name: Linux Release
+          draft: false
+          prerelease: false
+
       - name: Download linux client
         uses: actions/download-artifact@master
         with:
@@ -123,24 +136,6 @@ jobs:
         with:
           name: macos_client.zip
           path: .
-      - name: Check1
-        run: ls
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: Linux
-          release_name: Linux Release
-          draft: false
-          prerelease: false
-
-      - name: Check
-        run: ls
 
       - name: Upload Linux Release Asset
         uses: actions/upload-release-asset@v1
