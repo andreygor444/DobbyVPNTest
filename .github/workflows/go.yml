@@ -1,5 +1,7 @@
 name: Release
 
+permissions: write-all
+
 on:
   push:
 
@@ -121,26 +123,22 @@ jobs:
           prerelease: false
 
       - name: Download linux client
-        permissions: write-all
         uses: actions/download-artifact@master
         with:
           name: linux_client.zip
-          path: ./linux_client.zip
+          path: .
       - name: Download windows client
-        permissions: write-all
         uses: actions/download-artifact@master
         with:
           name: windows_client.zip
-          path: ./windows_client.zip
+          path: .
       - name: Download macos client
-        permissions: write-all
         uses: actions/download-artifact@master
         with:
           name: macos_client.zip
-          path: ./macos_client.zip
+          path: .
 
       - name: Upload Linux Release Asset
-        permissions: read-all
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -151,7 +149,6 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload Windows Release Asset
-        permissions: read-all
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -162,7 +159,6 @@ jobs:
           asset_content_type: application/zip
 
       - name: Upload MacOs Release Asset
-        permissions: read-all
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
